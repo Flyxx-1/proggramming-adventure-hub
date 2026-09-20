@@ -359,7 +359,7 @@ function Index() {
           <button onClick={() => scrollToId("top")} className="min-w-0 cursor-pointer text-left font-pixel text-sm text-primary transition-opacity hover:opacity-80 sm:text-base">PROG<span className="text-foreground">&#123;R&#125;</span>AMMING <span className="text-foreground">9.0</span></button>
           <div className="hidden items-center gap-7 lg:flex">
             {t.nav.map((item, i) => (
-              <button key={item} onClick={() => scrollToId(navHref[i])} className="cursor-pointer text-sm font-bold text-foreground/75 transition-colors hover:text-primary">{item}</button>
+              <button key={item} onClick={() => scrollToId(navHref[i]!)} className="cursor-pointer text-sm font-bold text-foreground/75 transition-colors hover:text-primary">{item}</button>
             ))}
             <div className="flex rounded-md border-2 border-foreground bg-card p-0.5 text-xs font-black">
               <button onClick={() => setLang("id")} className={`cursor-pointer rounded-sm px-2 py-1 transition-colors ${lang === "id" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"}`}>ID</button>
@@ -372,7 +372,7 @@ function Index() {
         {menu && (
           <div className="border-t bg-background px-4 py-4 lg:hidden">
             {t.nav.map((item, i) => (
-              <button key={item} onClick={() => { setMenu(false); scrollToId(navHref[i]); }} className="block w-full border-b py-3 text-left font-bold">{item}</button>
+              <button key={item} onClick={() => { setMenu(false); scrollToId(navHref[i]!); }} className="block w-full border-b py-3 text-left font-bold">{item}</button>
             ))}
             <div className="mt-4 flex gap-2">
               <Button size="sm" variant={lang === "id" ? "default" : "outline"} onClick={() => setLang("id")}>ID</Button>
@@ -420,7 +420,7 @@ function Index() {
       <section id="kenapa" className="section-pad bg-secondary/50">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl"><p className="eyebrow">{t.whyEyebrow}</p><h2 className="section-title">{t.whyTitle}</h2><p className="mt-4 text-lg text-muted-foreground">{t.whySub}</p></div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{t.benefits.map(({title,text},i)=>{const Icon=benefitIcons[i];return <article key={title} className="benefit-card"><span className="mb-8 flex size-12 items-center justify-center rounded-md border-2 border-foreground bg-accent text-accent-foreground shadow-pixel"><Icon /></span><span className="font-pixel text-[10px] text-primary">0{i+1}</span><h3 className="mt-2 text-xl font-black">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p></article>;})}</div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{t.benefits.map(({title,text},i)=>{const Icon=benefitIcons[i]!;return <article key={title} className="benefit-card"><span className="mb-8 flex size-12 items-center justify-center rounded-md border-2 border-foreground bg-accent text-accent-foreground shadow-pixel"><Icon /></span><span className="font-pixel text-[10px] text-primary">0{i+1}</span><h3 className="mt-2 text-xl font-black">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p></article>;})}</div>
         </div>
       </section>
 
@@ -430,7 +430,7 @@ function Index() {
           <div className="relative mt-14 grid gap-6 md:grid-cols-2">
             <div className="timeline-line" />
             {eraMeta.map(({no,icon:Icon,era:eraLabel,tone},i)=>{
-              const info = t.eras[i];
+              const info = t.eras[i]!;
               return (
                 <article key={no} className={`era-card ${tone} cursor-pointer transition-transform hover:-translate-y-1`} onClick={() => goRegister(no)} role="button" tabIndex={0} onKeyDown={(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();goRegister(no);}}}>
                   <div className="flex items-start justify-between gap-4"><span className="era-number">{no}</span><Icon className="size-9" /></div>
@@ -453,7 +453,7 @@ function Index() {
           <div className="adventure-map mt-12">
             <div className="map-path" />
             {t.mapStops.map((l,idx)=>{
-              const Icon = mapIcons[idx];
+              const Icon = mapIcons[idx]!;
               const key = eraMeta[idx-1]?.no;
               return (
                 <button key={l} type="button" onClick={() => (key ? goRegister(key) : scrollToId(idx === 0 ? "petualangan" : "daftar"))} className={`map-stop cursor-pointer ${idx%2 ? "map-stop-low" : ""}`}>
@@ -499,7 +499,7 @@ function Index() {
               {eraMeta.map(({no}, i) => (
                 <button key={no} type="button" onClick={() => setEra(no)} className={`cursor-pointer rounded-md border-2 border-foreground px-4 py-2 text-left text-sm font-black shadow-pixel transition-transform hover:-translate-y-0.5 ${era === no ? "bg-accent text-accent-foreground" : "bg-card text-card-foreground"}`}>
                   <span className="font-pixel text-[10px]">{no}</span>
-                  <span className="ml-2">{t.eras[i].theme}</span>
+                  <span className="ml-2">{t.eras[i]!.theme}</span>
                 </button>
               ))}
             </div>
