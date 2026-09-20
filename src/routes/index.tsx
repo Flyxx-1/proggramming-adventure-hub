@@ -272,7 +272,7 @@ const copy = {
       },
     },
   },
-} as const;
+};
 
 type EraKey = "9.1" | "9.2" | "9.3" | "9.4";
 
@@ -342,6 +342,7 @@ function Index() {
   const [lang, setLang] = useState<Lang>("id");
   const [menu, setMenu] = useState(false);
   const [era, setEra] = useState<EraKey>("9.1");
+  const [contact, setContact] = useState(false);
   const t = copy[lang];
   const navHref = ["tentang", "kenapa", "petualangan", "galeri", "faq"];
 
@@ -455,7 +456,7 @@ function Index() {
               const Icon = mapIcons[idx];
               const key = eraMeta[idx-1]?.no;
               return (
-                <button key={l} type="button" onClick={() => (key ? goRegister(key) : scrollToId(key ? "daftar" : idx === 0 ? "tentang" : "daftar"))} className={`map-stop cursor-pointer ${idx%2 ? "map-stop-low" : ""}`}>
+                <button key={l} type="button" onClick={() => (key ? goRegister(key) : scrollToId(idx === 0 ? "petualangan" : "daftar"))} className={`map-stop cursor-pointer ${idx%2 ? "map-stop-low" : ""}`}>
                   <div className="map-icon"><Icon /></div><span>{l}</span>
                 </button>
               );
@@ -514,8 +515,9 @@ function Index() {
         <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:grid-cols-[1fr_auto] sm:px-6 lg:px-8">
           <div><p className="font-pixel text-lg text-accent">PROG&#123;R&#125;AMMING 9.0</p><p className="mt-3 text-sm text-primary-foreground/65">{t.footerOrg}<br/>{t.footerUni}</p></div>
           <div className="flex items-center gap-3">
-            <a className="social-button" href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram /></a>
-            <a className="social-button" href="mailto:siso@pmbs.ac.id" aria-label="Email"><Mail /></a>
+            <button type="button" className="social-button cursor-pointer" onClick={() => setContact(true)} aria-label="Instagram"><Instagram /></button>
+            <button type="button" className="social-button cursor-pointer" onClick={() => setContact(true)} aria-label="Email"><Mail /></button>
+            {contact && <span className="text-sm text-primary-foreground/70">{t.faqBoxText}</span>}
           </div>
         </div>
         <div className="mx-auto mt-8 max-w-6xl border-t border-primary-foreground/15 px-4 pt-6 text-xs text-primary-foreground/45 sm:px-6 lg:px-8">{t.footerNote}</div>
