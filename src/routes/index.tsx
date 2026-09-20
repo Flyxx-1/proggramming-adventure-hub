@@ -25,7 +25,7 @@ import {
   X,
 } from "lucide-react";
 
-import mascotAsset from "@/assets/Pomi_explain_happy.png.asset.json";
+import mascotAsset from "@/assets/pomi-official-cropped.png.asset.json";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -145,7 +145,7 @@ function Index() {
           <div className="relative mx-auto flex min-h-96 w-full max-w-lg items-center justify-center">
             <div className="time-portal absolute h-72 w-72 rounded-full sm:h-96 sm:w-96" />
             <span className="pixel-star absolute left-8 top-12">✦</span><span className="pixel-star absolute right-6 top-24">✦</span><span className="pixel-star absolute bottom-20 right-14">✦</span>
-            <img src={mascotAsset.url} alt="Pomi, maskot resmi Prog{r}amming 9.0" className="mascot-float relative z-10 w-[72%] max-w-sm object-contain" />
+            <img src={mascotAsset.url} alt="Pomi, maskot resmi Prog{r}amming 9.0" width={537} height={751} className="mascot-float relative z-10 h-[26rem] w-auto max-w-[78%] object-contain" />
             <div className="absolute bottom-2 z-20 rounded-md border-2 border-foreground bg-accent px-4 py-2 font-pixel text-xs text-accent-foreground shadow-pixel">READY, EXPLORER?</div>
           </div>
         </div>
@@ -203,7 +203,7 @@ function Index() {
 
       <section id="daftar" className="section-pad bg-primary text-primary-foreground">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[.8fr_1.2fr] lg:px-8">
-          <div><p className="font-pixel text-xs text-accent">FINAL CHECKPOINT</p><h2 className="mt-4 text-4xl font-black sm:text-5xl">{t.formTitle}</h2><p className="mt-5 max-w-md text-lg text-primary-foreground/75">{t.formSub}</p><img src={mascotAsset.url} alt="Pomi mengajak peserta mendaftar" className="mt-8 hidden w-48 md:block" /></div>
+          <div><p className="font-pixel text-xs text-accent">FINAL CHECKPOINT</p><h2 className="mt-4 text-4xl font-black sm:text-5xl">{t.formTitle}</h2><p className="mt-5 max-w-md text-lg text-primary-foreground/75">{t.formSub}</p><img src={mascotAsset.url} alt="Pomi mengajak peserta mendaftar" loading="lazy" width={537} height={751} className="mt-8 hidden h-56 w-auto md:block" /></div>
           <form onSubmit={(e)=>e.preventDefault()} className="rounded-lg border-2 border-foreground bg-card p-5 text-card-foreground shadow-pixel-lg sm:p-8">
             <div className="grid gap-5 sm:grid-cols-2"><label className="field-label">Nama lengkap<Input placeholder="Nama peserta" className="form-control" /></label><label className="field-label">Sekolah<Input placeholder="Nama sekolah" className="form-control" /></label><label className="field-label">Jenjang pendidikan<Select><SelectTrigger className="form-control"><SelectValue placeholder="Pilih jenjang" /></SelectTrigger><SelectContent><SelectItem value="tk">TK</SelectItem><SelectItem value="sd">SD</SelectItem><SelectItem value="smp">SMP</SelectItem><SelectItem value="sma">SMA</SelectItem></SelectContent></Select></label><label className="field-label">Email<Input type="email" placeholder="nama@email.com" className="form-control" /></label><label className="field-label">WhatsApp<Input type="tel" placeholder="08xxxxxxxxxx" className="form-control" /></label><label className="field-label">Pilihan program<Select><SelectTrigger className="form-control"><SelectValue placeholder="Pilih program" /></SelectTrigger><SelectContent>{eras.map(e=><SelectItem key={e.no} value={e.no}>{e.no} — {e.title}</SelectItem>)}</SelectContent></Select></label></div>
             <Button type="submit" size="lg" className="game-button mt-7 w-full">{t.register}<ArrowRight /></Button><p className="mt-4 text-center text-xs text-muted-foreground">Formulir ini adalah pencatatan minat. Informasi pendaftaran resmi akan segera diumumkan.</p>
