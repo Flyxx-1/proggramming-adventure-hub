@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Programming94RouteImport } from './routes/programming-9-4'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Programming94Route = Programming94RouteImport.update({
+  id: '/programming-9-4',
+  path: '/programming-9-4',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/programming-9-4': typeof Programming94Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/programming-9-4': typeof Programming94Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/programming-9-4': typeof Programming94Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/programming-9-4'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/programming-9-4'
+  id: '__root__' | '/' | '/programming-9-4'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  Programming94Route: typeof Programming94Route
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/programming-9-4': {
+      id: '/programming-9-4'
+      path: '/programming-9-4'
+      fullPath: '/programming-9-4'
+      preLoaderRoute: typeof Programming94RouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  Programming94Route: Programming94Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
