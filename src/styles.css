@@ -183,3 +183,56 @@
 @keyframes spin{to{transform:rotate(360deg)}}@keyframes float{50%{transform:translateY(-12px)}}@keyframes blink{50%{opacity:.25}}
 @media(prefers-reduced-motion:reduce){.time-portal,.mascot-float,.pixel-star{animation:none}}
 @media(max-width:640px){.pixel-cloud{transform:scale(.55)}.shadow-pixel-lg{box-shadow:4px 4px 0 var(--foreground)}.map-stop-low{transform:none}.adventure-map{padding-bottom:1rem}.gallery-placeholder{grid-column:span 2}}
+
+/* ---------- Time of day (sun / moon / stars) ---------- */
+.time-sky{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.time-sky::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,oklch(.2 .08 270),oklch(.3 .1 280) 60%,transparent);opacity:0;transition:opacity 2.4s ease}
+.dark .time-sky::before{opacity:.85}
+.sun-orbit,.moon-orbit{position:absolute;left:50%;top:95%;width:0;height:0;transition:transform 2.6s cubic-bezier(.55,.05,.35,1)}
+.sun-disc,.moon-disc{position:absolute;display:block;width:4.5rem;height:4.5rem;transform:translate(-50%,-50%) translateY(calc(-1 * min(38vw,34rem)));image-rendering:pixelated}
+.sun-disc{border-radius:50%;background:oklch(.9 .17 85);box-shadow:0 0 0 6px oklch(.9 .17 85 / .35),0 0 60px 20px oklch(.88 .16 70 / .45)}
+.moon-disc{border-radius:50%;background:oklch(.95 .03 250);box-shadow:inset -14px -6px 0 oklch(.8 .04 260),0 0 40px 10px oklch(.9 .05 250 / .35)}
+/* East = right. Light: sun high in the east, moon below the western horizon. */
+.sun-orbit{transform:rotate(38deg)}
+.moon-orbit{transform:rotate(180deg)}
+/* Dark: sun sets to the west, moon rises from the east. */
+.dark .sun-orbit{transform:rotate(-100deg)}
+.dark .moon-orbit{transform:rotate(38deg)}
+.sky-stars{position:absolute;inset:0;opacity:0;transition:opacity 2s ease .6s}
+.dark .sky-stars{opacity:1}
+.sky-stars i{position:absolute;width:4px;height:4px;background:oklch(.97 .02 240);animation:blink 2.4s steps(2) infinite}
+.sky-stars i:nth-child(1){left:8%;top:14%}.sky-stars i:nth-child(2){left:22%;top:30%;animation-delay:.4s}.sky-stars i:nth-child(3){left:36%;top:10%;animation-delay:.9s}.sky-stars i:nth-child(4){left:52%;top:24%;animation-delay:1.3s}.sky-stars i:nth-child(5){left:64%;top:8%;animation-delay:.2s}.sky-stars i:nth-child(6){left:76%;top:34%;animation-delay:1.7s}.sky-stars i:nth-child(7){left:88%;top:16%;animation-delay:.7s}.sky-stars i:nth-child(8){left:94%;top:40%;animation-delay:1.1s}
+.hero-sky{transition:background-color 2.4s ease}
+.time-toggle{gap:.4rem}
+@media(max-width:640px){.sun-disc,.moon-disc{width:3rem;height:3rem;transform:translate(-50%,-50%) translateY(-62vw)}}
+@media(prefers-reduced-motion:reduce){.sun-orbit,.moon-orbit,.time-sky::before,.sky-stars{transition:none}.sky-stars i{animation:none}}
+
+/* ---------- Event cards, WhatsApp ---------- */
+.event-card{display:block;overflow:hidden;border:2px solid var(--foreground);border-radius:.5rem;background:var(--card);box-shadow:5px 5px 0 var(--foreground);transition:transform .25s ease,opacity .25s ease,filter .25s ease}
+.event-card:hover{transform:translateY(-4px)}
+.event-open{box-shadow:6px 6px 0 var(--accent);outline:3px solid var(--accent);outline-offset:2px}
+.event-past{filter:grayscale(.85);opacity:.8}
+.event-upcoming{transform:scale(.94)}
+.event-poster{position:relative;display:flex;aspect-ratio:4/3;flex-direction:column;align-items:center;justify-content:center}
+.event-status{position:absolute;left:.6rem;top:.6rem;border:2px solid currentColor;background:var(--card);color:var(--foreground);padding:.3rem .5rem;font-family:var(--font-pixel);font-size:.5rem}
+.wa-float{position:fixed;right:1.25rem;bottom:1.25rem;z-index:60;display:grid;width:3.5rem;height:3.5rem;place-items:center;border:2px solid var(--foreground);border-radius:50%;background:oklch(.72 .17 150);color:oklch(.99 0 0);box-shadow:4px 4px 0 var(--foreground);transition:transform .2s}
+.wa-float:hover{transform:translateY(-3px)}
+
+/* ---------- Prog{r}amming 9.4 — Future chapter ---------- */
+.future-page{--f-bg:oklch(.17 .05 270);--f-panel:oklch(.22 .06 272);--f-line:oklch(.4 .07 275 / .5);--f-text:oklch(.95 .015 250);--f-muted:oklch(.74 .03 260);--f-cyan:oklch(.8 .12 205);--f-purple:oklch(.66 .15 295);background:var(--f-bg);color:var(--f-text);min-height:100vh}
+:root:not(.dark) .future-page{--f-bg:oklch(.24 .07 268);--f-panel:oklch(.29 .07 270)}
+.future-bg{background:var(--f-bg)}.future-text{color:var(--f-text)}.future-muted{color:var(--f-muted)}.future-cyan{color:var(--f-cyan)}.future-purple{color:var(--f-purple)}
+.future-hero{position:relative;overflow:hidden;background:linear-gradient(180deg,oklch(.2 .07 275),var(--f-bg))}
+.future-grid{position:absolute;inset:0;background-image:linear-gradient(var(--f-line) 1px,transparent 1px),linear-gradient(90deg,var(--f-line) 1px,transparent 1px);background-size:48px 48px;opacity:.25;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+.future-portal{position:absolute;border-radius:50%;border:1px solid var(--f-line);box-shadow:inset 0 0 80px oklch(.6 .15 290 / .25),0 0 80px oklch(.7 .12 210 / .15)}
+.future-mascot{image-rendering:pixelated;filter:drop-shadow(0 20px 30px oklch(.1 .05 270 / .6));animation:float 6s ease-in-out infinite}
+.future-card{border:1px solid var(--f-line);border-radius:.9rem;background:var(--f-panel);padding:1.75rem;transition:border-color .3s,transform .3s}
+.future-card:hover{border-color:var(--f-cyan);transform:translateY(-2px)}
+.future-panel{border:1px solid var(--f-line);border-radius:1rem;background:var(--f-panel)}
+.future-line{border-color:var(--f-line)}
+.future-label{font-family:var(--font-pixel);font-size:.6rem;letter-spacing:.08em;color:var(--f-cyan)}
+.future-cta{border-radius:.5rem;background:var(--f-cyan);color:oklch(.17 .05 270);font-weight:800;transition:background .2s,transform .2s}
+.future-cta:hover{background:oklch(.86 .1 205);transform:translateY(-1px)}
+.future-control{height:3rem;border:1px solid var(--f-line);background:oklch(.15 .04 270);color:var(--f-text)}
+.future-page .time-sky::before{display:none}
+@media(prefers-reduced-motion:reduce){.future-mascot{animation:none}}
