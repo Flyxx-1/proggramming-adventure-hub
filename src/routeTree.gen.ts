@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PomiRouteImport } from './routes/pomi'
 import { Route as Programming94RouteImport } from './routes/programming-9-4'
+import { Route as DaftarEventRouteImport } from './routes/daftar.$event'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const Programming94Route = Programming94RouteImport.update({
   path: '/programming-9-4',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DaftarEventRoute = DaftarEventRouteImport.update({
+  id: '/daftar/$event',
+  path: '/daftar/$event',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/pomi': typeof PomiRoute
   '/programming-9-4': typeof Programming94Route
+  '/daftar/$event': typeof DaftarEventRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/pomi': typeof PomiRoute
   '/programming-9-4': typeof Programming94Route
+  '/daftar/$event': typeof DaftarEventRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/pomi': typeof PomiRoute
   '/programming-9-4': typeof Programming94Route
+  '/daftar/$event': typeof DaftarEventRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pomi' | '/programming-9-4'
+  fullPaths: '/' | '/pomi' | '/programming-9-4' | '/daftar/$event'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/pomi' | '/programming-9-4'
-  id: '__root__' | '/' | '/pomi' | '/programming-9-4'
+  to: '/' | '/pomi' | '/programming-9-4' | '/daftar/$event'
+  id: '__root__' | '/' | '/pomi' | '/programming-9-4' | '/daftar/$event'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PomiRoute: typeof PomiRoute
   Programming94Route: typeof Programming94Route
+  DaftarEventRoute: typeof DaftarEventRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Programming94RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/daftar/$event': {
+      id: '/daftar/$event'
+      path: '/daftar/$event'
+      fullPath: '/daftar/$event'
+      preLoaderRoute: typeof DaftarEventRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PomiRoute: PomiRoute,
   Programming94Route: Programming94Route,
+  DaftarEventRoute: DaftarEventRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
