@@ -1,33 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-  ArrowDown,
-  ArrowRight,
-  Atom,
-  Bot,
-  Boxes,
-  Castle,
-  CheckCircle2,
-  Code2,
-  Cog,
-  Flag,
-  Gamepad2,
-  Instagram,
-  Mail,
-  Menu,
-  MessageCircle,
-  Palette,
-  Rocket,
-  Sparkles,
-  Users,
-  X,
-} from "lucide-react";
+import { ArrowRight, Atom, Bot, Castle, Code2, Cog, Flag, Gamepad2, Instagram, Mail, Menu, Palette, Rocket, Sparkles, Users, X } from "lucide-react";
 
-import mascotAsset from "@/assets/pomi-official-cropped.png.asset.json";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { EventCarousel, FaqSection, HeroCarousel, PlatformGrid, WhatsAppFloat } from "@/components/programming/sections";
+import { TimeModeToggle, TimeSky, useSiteLanguage, useTimeMode } from "@/components/programming/site-preferences";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { EVENTS, SITE } from "@/data/programming";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -294,60 +272,16 @@ function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function RegistrationForm({ lang, era }: { lang: Lang; era: EraKey }) {
-  const t = copy[lang];
-  const form = t.forms[era];
-  const [done, setDone] = useState(false);
-
-  if (done) {
-    return (
-      <div className="rounded-lg border-2 border-foreground bg-card p-8 text-center text-card-foreground shadow-pixel-lg">
-        <CheckCircle2 className="mx-auto size-12 text-primary" />
-        <h3 className="mt-4 text-2xl font-black">{t.successTitle}</h3>
-        <p className="mx-auto mt-2 max-w-md text-muted-foreground">{t.successText}</p>
-        <Button variant="outline" className="game-button-secondary mt-6" onClick={() => setDone(false)}>{t.again}</Button>
-      </div>
-    );
-  }
-
-  return (
-    <form
-      key={`${lang}-${era}`}
-      onSubmit={(e) => { e.preventDefault(); setDone(true); }}
-      className="rounded-lg border-2 border-foreground bg-card p-5 text-card-foreground shadow-pixel-lg sm:p-8"
-    >
-      <p className="mb-6 flex items-center gap-2 font-pixel text-[10px] text-primary">{era}<span className="font-sans text-sm font-bold normal-case text-muted-foreground">{form.note}</span></p>
-      <div className="grid gap-5 sm:grid-cols-2">
-        {form.fields.map((f) => (
-          <label key={f.k} className="field-label">
-            {f.label}
-            {"options" in f ? (
-              <Select required name={f.k}>
-                <SelectTrigger className="form-control"><SelectValue placeholder={f.ph} /></SelectTrigger>
-                <SelectContent>{f.options.map((o) => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-              </Select>
-            ) : (
-              <Input required name={f.k} type={"type" in f && f.type ? f.type : "text"} placeholder={f.ph} className="form-control" />
-            )}
-          </label>
-        ))}
-      </div>
-      <Button type="submit" size="lg" className="game-button mt-7 w-full">{t.submit}<ArrowRight /></Button>
-      <p className="mt-4 text-center text-xs text-muted-foreground">{t.disclaimer}</p>
-    </form>
-  );
-}
-
 function Index() {
-  const [lang, setLang] = useState<Lang>("id");
+  const [lang, setLang] = useSiteLanguage();
+  const [dark, toggleTime] = useTimeMode();
+  const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
-  const [era, setEra] = useState<EraKey>("9.1");
   const [contact, setContact] = useState(false);
   const t = copy[lang];
   const navHref = ["tentang", "kenapa", "petualangan", "galeri", "faq"];
 
-  const goRegister = (key?: EraKey) => {
-    if (key) setEra(key);
+  const goRegister = () => {
     setMenu(false);
     scrollToId("daftar");
   };
@@ -365,9 +299,13 @@ function Index() {
               <button onClick={() => setLang("id")} className={`cursor-pointer rounded-sm px-2 py-1 transition-colors ${lang === "id" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"}`}>ID</button>
               <button onClick={() => setLang("en")} className={`cursor-pointer rounded-sm px-2 py-1 transition-colors ${lang === "en" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"}`}>EN</button>
             </div>
+            <TimeModeToggle dark={dark} onToggle={toggleTime} language={lang} />
             <Button size="sm" className="game-button" onClick={() => goRegister()}>{t.register}</Button>
           </div>
-          <Button variant="outline" size="icon" className="lg:hidden" onClick={() => setMenu(!menu)} aria-label={t.menuLabel}>{menu ? <X /> : <Menu />}</Button>
+          <div className="flex items-center gap-2 lg:hidden">
+            <TimeModeToggle dark={dark} onToggle={toggleTime} language={lang} compact />
+            <Button variant="outline" size="icon" onClick={() => setMenu(!menu)} aria-label={t.menuLabel}>{menu ? <X /> : <Menu />}</Button>
+          </div>
         </div>
         {menu && (
           <div className="border-t bg-background px-4 py-4 lg:hidden">
@@ -383,37 +321,17 @@ function Index() {
         )}
       </nav>
 
-      <section id="top" className="hero-sky relative flex min-h-[92vh] items-center pt-20">
+      <section id="top" className="hero-sky relative flex min-h-[92vh] items-center overflow-hidden pt-20">
+        <TimeSky />
         <PixelCloud className="left-[3%] top-28" /><PixelCloud className="right-[8%] top-40 scale-75" />
         <div className="absolute inset-x-0 bottom-0 h-40 pixel-land" aria-hidden="true" />
-        <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 px-4 pb-28 pt-8 sm:px-6 lg:grid-cols-[1.08fr_.92fr] lg:px-8">
-          <div className="text-center lg:text-left">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border-2 border-primary bg-card px-4 py-2 text-xs font-black uppercase text-primary shadow-pixel"><Sparkles className="size-4" /> {t.heroBadge}</div>
-            <h1 className="font-pixel text-[clamp(2rem,6vw,4.7rem)] leading-[1.15] text-foreground pixel-title">PROG<span className="text-primary">&#123;R&#125;</span>AMMING <span className="text-accent">9.0</span></h1>
-            <h2 className="mx-auto mt-6 max-w-2xl text-3xl font-black leading-tight text-foreground sm:text-4xl lg:mx-0 lg:text-5xl">{t.headline}</h2>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-foreground/75 sm:text-lg lg:mx-0">{t.intro}</p>
-            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
-              <Button size="lg" className="game-button h-13 px-7" onClick={() => goRegister()}>{t.register}<ArrowRight /></Button>
-              <Button size="lg" variant="outline" className="game-button-secondary h-13 px-7" onClick={() => scrollToId("tentang")}>{t.know}<ArrowDown /></Button>
-            </div>
-          </div>
-          <div className="relative mx-auto flex min-h-96 w-full max-w-lg items-center justify-center">
-            <div className="time-portal absolute h-72 w-72 rounded-full sm:h-96 sm:w-96" />
-            <span className="pixel-star absolute left-8 top-12">✦</span><span className="pixel-star absolute right-6 top-24">✦</span><span className="pixel-star absolute bottom-20 right-14">✦</span>
-            <img src={mascotAsset.url} alt="Pomi, maskot resmi Prog{r}amming 9.0" width={537} height={751} className="mascot-float relative z-10 h-[26rem] w-auto max-w-[78%] object-contain" />
-            <div className="absolute bottom-2 z-20 rounded-md border-2 border-foreground bg-accent px-4 py-2 font-pixel text-xs text-accent-foreground shadow-pixel">{t.heroTag}</div>
-          </div>
-        </div>
+        <HeroCarousel lang={lang} onRegister={() => goRegister()} onLearn={() => scrollToId("tentang")} />
       </section>
 
       <section id="tentang" className="section-pad bg-card">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[.8fr_1.2fr] lg:px-8">
           <div><p className="eyebrow">{t.aboutEyebrow}</p><h2 className="section-title">{t.aboutTitle}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{t.about}</p></div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[{n:"01",name:"Code.org",i:Code2,url:"https://code.org"},{n:"02",name:"Scratch",i:Gamepad2,url:"https://scratch.mit.edu"},{n:"03",name:"MIT App Inventor",i:Boxes,url:"https://appinventor.mit.edu"},{n:"04",name:"Figma",i:Palette,url:"https://figma.com"}].map(({n,name,i:Icon,url}) => (
-              <a key={name} href={url} target="_blank" rel="noreferrer" className="platform-card transition-transform hover:-translate-y-1"><span className="font-pixel text-[10px] text-primary">{n}</span><Icon className="my-5 size-9 text-accent"/><strong className="leading-tight">{name}</strong></a>
-            ))}
-          </div>
+          <PlatformGrid lang={lang} />
         </div>
       </section>
 
@@ -427,23 +345,7 @@ function Index() {
       <section id="petualangan" className="section-pad bg-foreground text-primary-foreground">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="text-center"><p className="eyebrow text-accent">{t.adventureEyebrow}</p><h2 className="section-title text-primary-foreground">{t.adventureTitle}</h2><p className="mx-auto mt-4 max-w-2xl text-primary-foreground/65">{t.adventureSub}</p></div>
-          <div className="relative mt-14 grid gap-6 md:grid-cols-2">
-            <div className="timeline-line" />
-            {eraMeta.map(({no,icon:Icon,era:eraLabel,tone},i)=>{
-              const info = t.eras[i]!;
-              return (
-                <article key={no} className={`era-card ${tone} cursor-pointer transition-transform hover:-translate-y-1`} onClick={() => goRegister(no)} role="button" tabIndex={0} onKeyDown={(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();goRegister(no);}}}>
-                  <div className="flex items-start justify-between gap-4"><span className="era-number">{no}</span><Icon className="size-9" /></div>
-                  <p className="mt-8 font-pixel text-[10px] opacity-70">{eraLabel}</p>
-                  <h3 className="mt-2 text-2xl font-black">{info.title}</h3>
-                  <p className="mt-1 font-bold">{info.theme}</p>
-                  <p className="mt-4 text-sm leading-6 opacity-75">{info.text}</p>
-                  <div className="mt-6 inline-flex items-center gap-2 font-pixel text-[10px]">{info.verb}<ArrowRight className="size-4" /></div>
-                  <Button size="sm" variant="outline" className="game-button-secondary mt-5 w-full" onClick={(e) => { e.stopPropagation(); goRegister(no); }}>{t.eraCta}</Button>
-                </article>
-              );
-            })}
-          </div>
+          <EventCarousel lang={lang} />
         </div>
       </section>
 
@@ -455,8 +357,13 @@ function Index() {
             {t.mapStops.map((l,idx)=>{
               const Icon = mapIcons[idx]!;
               const key = eraMeta[idx-1]?.no;
+              const go = () => {
+                if (key === "9.4") return navigate({ to: "/programming-9-4" });
+                if (key === "9.2" || key === "9.3") return navigate({ to: "/daftar/$event", params: { event: key.replace(".", "-") } });
+                scrollToId(idx === 0 ? "petualangan" : "daftar");
+              };
               return (
-                <button key={l} type="button" onClick={() => (key ? goRegister(key) : scrollToId(idx === 0 ? "petualangan" : "daftar"))} className={`map-stop cursor-pointer ${idx%2 ? "map-stop-low" : ""}`}>
+                <button key={l} type="button" onClick={go} className={`map-stop cursor-pointer ${idx%2 ? "map-stop-low" : ""}`}>
                   <div className="map-icon"><Icon /></div><span>{l}</span>
                 </button>
               );
@@ -472,19 +379,7 @@ function Index() {
         </div>
       </section>
 
-      <section id="faq" className="section-pad bg-secondary/50">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[.75fr_1.25fr] lg:px-8">
-          <div><p className="eyebrow">{t.faqEyebrow}</p><h2 className="section-title">{t.faqTitle}</h2><div className="mt-6 rounded-md border-2 border-primary bg-card p-5 shadow-pixel"><MessageCircle className="size-7 text-primary"/><p className="mt-3 font-bold">{t.faqBoxTitle}</p><p className="mt-1 text-sm text-muted-foreground">{t.faqBoxText}</p></div></div>
-          <Accordion type="single" collapsible className="space-y-3">
-            {t.faq.map(([q,a],i)=>(
-              <AccordionItem key={q} value={`item-${i}`} className="rounded-md border-2 border-border bg-card px-5 shadow-sm">
-                <AccordionTrigger className="text-base font-black hover:no-underline">{q}</AccordionTrigger>
-                <AccordionContent className="leading-7 text-muted-foreground">{a}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
+      <FaqSection lang={lang} />
 
       <section id="daftar" className="section-pad bg-primary text-primary-foreground">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -493,27 +388,33 @@ function Index() {
             <h2 className="mt-4 text-4xl font-black sm:text-5xl">{t.formTitle}</h2>
             <p className="mt-5 text-lg text-primary-foreground/80">{t.formSub}</p>
           </div>
-          <div className="mt-8">
-            <p className="font-pixel text-[10px] text-accent">{t.pick}</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {eraMeta.map(({no}, i) => (
-                <button key={no} type="button" onClick={() => setEra(no)} className={`cursor-pointer rounded-md border-2 border-foreground px-4 py-2 text-left text-sm font-black shadow-pixel transition-transform hover:-translate-y-0.5 ${era === no ? "bg-accent text-accent-foreground" : "bg-card text-card-foreground"}`}>
-                  <span className="font-pixel text-[10px]">{no}</span>
-                  <span className="ml-2">{t.eras[i]!.theme}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="mt-8 grid gap-8 lg:grid-cols-[1.4fr_.6fr]">
-            <RegistrationForm lang={lang} era={era} />
-            <img src={mascotAsset.url} alt="Pomi" loading="lazy" width={537} height={751} className="mx-auto hidden h-72 w-auto self-end lg:block" />
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {EVENTS.map((ev) => {
+              const status = { id: { open: "DIBUKA", past: "SELESAI", upcoming: "AKAN DATANG" }, en: { open: "OPEN", past: "FINISHED", upcoming: "COMING SOON" } }[lang][ev.status];
+              return (
+                <article key={ev.key} className="flex flex-col rounded-lg border-2 border-foreground bg-card p-5 text-card-foreground shadow-pixel">
+                  <div className="flex items-center justify-between"><span className="font-pixel text-sm text-primary">{ev.key}</span><span className="font-pixel text-[8px] text-muted-foreground">{status}</span></div>
+                  <h3 className="mt-4 text-xl font-black">{ev.theme[lang]}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{ev.openTo[lang]}</p>
+                  <div className="mt-auto pt-5">
+                    {ev.key === "9.1" ? (
+                      <p className="rounded-md border-2 border-dashed border-primary p-3 text-xs font-bold">{ev.mechanism[0]![lang]}</p>
+                    ) : ev.key === "9.4" ? (
+                      <Button asChild className="game-button w-full"><Link to="/programming-9-4">{lang === "id" ? "Daftar 9.4" : "Register 9.4"}<ArrowRight /></Link></Button>
+                    ) : (
+                      <Button asChild className="game-button w-full"><Link to="/daftar/$event" params={{ event: ev.slug! }}>{lang === "id" ? `Daftar ${ev.key}` : `Register ${ev.key}`}<ArrowRight /></Link></Button>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
 
       <footer className="bg-foreground py-10 text-primary-foreground">
         <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:grid-cols-[1fr_auto] sm:px-6 lg:px-8">
-          <div><p className="font-pixel text-lg text-accent">PROG&#123;R&#125;AMMING 9.0</p><p className="mt-3 text-sm text-primary-foreground/65">{t.footerOrg}<br/>{t.footerUni}</p></div>
+          <div><p className="font-pixel text-lg text-accent">PROG&#123;R&#125;AMMING 9.0</p><p className="mt-3 text-sm text-primary-foreground/65">{t.footerOrg}<br/>{SITE.campus}</p></div>
           <div className="flex items-center gap-3">
             <button type="button" className="social-button cursor-pointer" onClick={() => setContact(true)} aria-label="Instagram"><Instagram /></button>
             <button type="button" className="social-button cursor-pointer" onClick={() => setContact(true)} aria-label="Email"><Mail /></button>
@@ -522,6 +423,7 @@ function Index() {
         </div>
         <div className="mx-auto mt-8 max-w-6xl border-t border-primary-foreground/15 px-4 pt-6 text-xs text-primary-foreground/45 sm:px-6 lg:px-8">{t.footerNote}</div>
       </footer>
+      <WhatsAppFloat lang={lang} />
     </main>
   );
 }
