@@ -358,8 +358,8 @@ function Index() {
               const Icon = mapIcons[idx]!;
               const key = eraMeta[idx-1]?.no;
               const go = () => {
-                if (key === "9.4") return navigate({ to: "/programming-9-4" });
-                if (key === "9.2" || key === "9.3") return navigate({ to: "/daftar/$event", params: { event: key.replace(".", "-") } });
+                if (key === "9.4") { void navigate({ to: "/programming-9-4" }); return; }
+                if (key === "9.2" || key === "9.3") { void navigate({ to: "/daftar/$event", params: { event: key.replace(".", "-") } }); return; }
                 scrollToId(idx === 0 ? "petualangan" : "daftar");
               };
               return (
