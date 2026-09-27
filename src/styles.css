@@ -236,3 +236,48 @@
 .future-control{height:3rem;border:1px solid var(--f-line);background:oklch(.15 .04 270);color:var(--f-text)}
 .future-page .time-sky::before{display:none}
 @media(prefers-reduced-motion:reduce){.future-mascot{animation:none}}
+
+/* ---------- Interactive Pomi ---------- */
+.pomi-companion{position:fixed;left:1rem;bottom:1rem;z-index:55;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;pointer-events:none}
+.pomi-companion>*{pointer-events:auto}
+.pomi-body{display:block;width:4.75rem;cursor:pointer;background:none;border:0;padding:0;transform-origin:50% 100%}
+.pomi-body img{width:100%;height:auto;image-rendering:pixelated;filter:drop-shadow(4px 5px 0 color-mix(in oklab,var(--foreground) 22%,transparent));user-select:none}
+.pomi-min{display:grid;width:1.4rem;height:1.4rem;place-items:center;border:2px solid var(--foreground);border-radius:.25rem;background:var(--card);color:var(--foreground);opacity:.75}
+.pomi-min:hover{opacity:1;background:var(--accent)}
+.pomi-bubble{position:relative;max-width:14rem;border:2px solid var(--foreground);border-radius:.35rem;background:var(--card);color:var(--card-foreground);padding:.55rem 1.6rem .55rem .7rem;font-size:.8rem;font-weight:700;box-shadow:3px 3px 0 var(--foreground);animation:pomi-pop .25s ease-out}
+.pomi-bubble::after{content:"";position:absolute;left:1.4rem;bottom:-8px;width:10px;height:10px;background:var(--card);border-right:2px solid var(--foreground);border-bottom:2px solid var(--foreground);transform:rotate(45deg)}
+.pomi-x{position:absolute;right:.3rem;top:.3rem;opacity:.6}.pomi-x:hover{opacity:1}
+.pomi-menu{display:flex;min-width:11rem;flex-direction:column;gap:.3rem;border:2px solid var(--foreground);border-radius:.4rem;background:var(--card);color:var(--card-foreground);padding:.6rem;box-shadow:4px 4px 0 var(--foreground);animation:pomi-pop .2s ease-out}
+.pomi-menu button{border-radius:.25rem;padding:.4rem .5rem;text-align:left;font-size:.85rem;font-weight:800}
+.pomi-menu button:hover,.pomi-menu button:focus-visible{background:var(--accent);color:var(--accent-foreground)}
+.pomi-menu .pomi-menu-hide{display:flex;align-items:center;gap:.35rem;margin-top:.2rem;border-top:1px dashed var(--border);font-size:.75rem;font-weight:600;opacity:.75}
+.pomi-tab{position:fixed;left:0;bottom:1rem;z-index:55;display:flex;align-items:center;gap:.4rem;border:2px solid var(--foreground);border-left:0;border-radius:0 .4rem .4rem 0;background:var(--card);color:var(--card-foreground);padding:.3rem .6rem .3rem .4rem;font-size:.7rem;font-weight:800;box-shadow:3px 3px 0 var(--foreground)}
+.pomi-subtle .pomi-bubble,.pomi-subtle .pomi-menu{border:1px solid oklch(.4 .07 275 / .6);background:oklch(.22 .06 272);color:oklch(.95 .015 250);box-shadow:0 10px 30px oklch(.1 .05 270 / .5);border-radius:.7rem}
+.pomi-subtle .pomi-bubble::after{background:oklch(.22 .06 272);border-color:oklch(.4 .07 275 / .6);border-width:0 1px 1px 0}
+.pomi-subtle .pomi-body img{filter:drop-shadow(0 8px 14px oklch(.1 .05 270 / .6))}
+/* animation states */
+.pomi-s-idle{animation:pomi-breathe 3.5s ease-in-out infinite}
+.pomi-s-blink{animation:pomi-blink .5s steps(2)}
+.pomi-s-nod{animation:pomi-nod .7s ease-in-out}
+.pomi-s-look-left{transform:rotate(-6deg) translateX(-2px);transition:transform .4s}
+.pomi-s-look-right{transform:scaleX(-1) rotate(-6deg);transition:transform .4s}
+.pomi-s-wave{animation:pomi-wave .45s ease-in-out 3}
+.pomi-s-walk{animation:pomi-walk .4s steps(2) 3}
+.pomi-s-point-left{transform:rotate(-12deg) translateX(-4px);transition:transform .3s}
+.pomi-s-point-right{transform:scaleX(-1) rotate(-12deg);transition:transform .3s}
+.pomi-s-point-up{transform:translateY(-8px) scale(1.04);transition:transform .3s}
+.pomi-s-point-down{transform:rotate(8deg) translateY(3px);transition:transform .3s}
+.pomi-s-jump{animation:pomi-jump .55s cubic-bezier(.3,.7,.4,1) 2}
+.pomi-s-excited{animation:pomi-excited .3s ease-in-out 4}
+.pomi-s-thinking{transform:rotate(5deg);animation:pomi-breathe 1.2s ease-in-out infinite}
+.pomi-subtle .pomi-s-idle{animation-duration:5s}
+@keyframes pomi-breathe{50%{transform:translateY(-3px)}}
+@keyframes pomi-blink{50%{transform:scaleY(.94);filter:brightness(.92)}}
+@keyframes pomi-nod{30%{transform:rotate(6deg) translateY(2px)}70%{transform:rotate(-3deg)}}
+@keyframes pomi-wave{50%{transform:rotate(-9deg)}}
+@keyframes pomi-walk{50%{transform:translateX(4px) translateY(-2px)}}
+@keyframes pomi-jump{40%{transform:translateY(-22px) scale(.97,1.04)}80%{transform:translateY(0) scale(1.05,.95)}}
+@keyframes pomi-excited{25%{transform:rotate(-7deg) translateY(-4px)}75%{transform:rotate(7deg) translateY(-4px)}}
+@keyframes pomi-pop{from{opacity:0;transform:translateY(6px) scale(.95)}}
+@media(max-width:640px){.pomi-companion{left:.5rem;bottom:.5rem}.pomi-body{width:3.25rem}.pomi-bubble{max-width:11rem;font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){.pomi-body,.pomi-bubble,.pomi-menu{animation:none!important;transition:none!important}}
