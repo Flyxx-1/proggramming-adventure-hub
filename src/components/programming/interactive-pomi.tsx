@@ -155,7 +155,7 @@ export function InteractivePomi() {
       const label = `${el.textContent ?? ""} ${el.getAttribute("href") ?? ""}`;
       if (!re.test(label)) return;
       last = el;
-      pointAt(el, pickOne(LINES[lang].cta!));
+      pointAt(el, pickOne(LINES[lang]["cta"]!));
     };
     document.addEventListener("mouseover", onOver);
     document.addEventListener("focusin", onOver);
@@ -181,7 +181,7 @@ export function InteractivePomi() {
     window.clearTimeout(clickTimer.current);
     setMenu(false);
     play(subtle ? "nod" : pickOne<PomiState>(["jump", "excited", "nod"]), 1100);
-    say(pickOne(LINES[lang].fun!), true);
+    say(pickOne(LINES[lang]["fun"]!), true);
   };
 
   const setHide = (v: boolean) => { setHidden(v); setMenu(false); setBubble(null); localStorage.setItem("programming-pomi-hidden", v ? "1" : "0"); };
