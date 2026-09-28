@@ -281,3 +281,8 @@
 @keyframes pomi-pop{from{opacity:0;transform:translateY(6px) scale(.95)}}
 @media(max-width:640px){.pomi-companion{left:.5rem;bottom:.5rem}.pomi-body{width:3.25rem}.pomi-bubble{max-width:11rem;font-size:.72rem}}
 @media(prefers-reduced-motion:reduce){.pomi-body,.pomi-bubble,.pomi-menu{animation:none!important;transition:none!important}}
+/* Only one celestial body visible per mode; fully hidden after exit */
+.sun-orbit{visibility:visible;transition:transform 2.6s cubic-bezier(.55,.05,.35,1),visibility 0s 0s}
+.moon-orbit{visibility:hidden;transition:transform 2.6s cubic-bezier(.55,.05,.35,1),visibility 0s 2.6s}
+.dark .sun-orbit{visibility:hidden;transition:transform 2.6s cubic-bezier(.55,.05,.35,1),visibility 0s 2.6s}
+.dark .moon-orbit{visibility:visible;transition:transform 2.6s cubic-bezier(.55,.05,.35,1),visibility 0s 0s}

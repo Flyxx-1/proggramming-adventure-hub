@@ -26,37 +26,36 @@ export const Route = createFileRoute("/daftar/$event")({
 
 type F = { k: string; id: string; en: string; type?: string; options?: { id: string; en: string }[] };
 const lv = (a: string, b: string) => ({ id: a, en: b });
-const levels = [lv("TK", "Kindergarten"), lv("SD", "Elementary"), lv("SMP", "Junior High"), lv("SMA", "High School")];
+const levels = [lv("TK–SD 1–2 / Code.org", "Kindergarten–Grade 2 / Code.org"), lv("SD 3–6 / Scratch", "Grade 3–6 / Scratch"), lv("SMP / MIT App Inventor", "Junior High / MIT App Inventor"), lv("SMA / Figma", "High School / Figma")];
+const parentStep = { title: lv("Data orang tua / wali", "Parent / guardian data"), fields: [
+  { k: "parent", ...lv("Nama orang tua / wali", "Parent / guardian name") },
+  { k: "phone", ...lv("Nomor telepon", "Phone number"), type: "tel" },
+  { k: "relation", ...lv("Hubungan dengan peserta", "Relationship to participant") },
+] as F[] };
 
 function stepsFor(team: boolean): { title: { id: string; en: string }; fields: F[] }[] {
   if (team) {
     return [
-      { title: lv("Data tim", "Team data"), fields: [
+      { title: lv("Data peserta (kelompok)", "Participant data (team)"), fields: [
         { k: "team", ...lv("Nama tim", "Team name") },
         { k: "track", ...lv("Kategori", "Category"), options: [lv("UI/UX Design Competition", "UI/UX Design Competition"), lv("Hackathon", "Hackathon")] },
-        { k: "leader", ...lv("Nama ketua tim", "Team leader name") },
-        { k: "members", ...lv("Nama anggota lain (pisahkan dengan koma)", "Other members (comma separated)") },
+        { k: "count", ...lv("Jumlah anggota", "Team size"), options: [lv("3 orang", "3 members"), lv("4 orang", "4 members")] },
+        { k: "m1", ...lv("Nama anggota 1 (ketua)", "Member 1 name (leader)") },
+        { k: "m2", ...lv("Nama anggota 2", "Member 2 name") },
+        { k: "m3", ...lv("Nama anggota 3", "Member 3 name") },
+        { k: "m4", ...lv("Nama anggota 4 (opsional)", "Member 4 name (optional)"), type: "optional" },
         { k: "inst", ...lv("Asal sekolah / kampus", "School / university") },
       ] },
-      { title: lv("Kontak", "Contact"), fields: [
-        { k: "email", ...lv("Email ketua", "Leader email"), type: "email" },
-        { k: "wa", ...lv("WhatsApp ketua", "Leader WhatsApp"), type: "tel" },
-        { k: "count", ...lv("Jumlah anggota", "Team size"), options: [lv("3 orang", "3 members"), lv("4 orang", "4 members")] },
-      ] },
+      parentStep,
     ];
   }
   return [
     { title: lv("Data peserta", "Participant data"), fields: [
-      { k: "name", ...lv("Nama lengkap peserta", "Participant full name") },
+      { k: "name", ...lv("Nama peserta", "Participant name") },
+      { k: "level", ...lv("Tingkat sekolah / platform", "School level / platform"), options: levels },
       { k: "school", ...lv("Asal sekolah", "School") },
-      { k: "level", ...lv("Jenjang", "Level"), options: levels },
-      { k: "grade", ...lv("Kelas", "Grade") },
     ] },
-    { title: lv("Data orang tua / wali", "Parent / guardian data"), fields: [
-      { k: "parent", ...lv("Nama orang tua / wali", "Parent / guardian name") },
-      { k: "email", ...lv("Email", "Email"), type: "email" },
-      { k: "wa", ...lv("WhatsApp", "WhatsApp"), type: "tel" },
-    ] },
+    parentStep,
   ];
 }
 
@@ -115,7 +114,7 @@ function RegisterPage() {
                         {f.options.map((o) => <option key={o.id} value={o.id}>{o[lang]}</option>)}
                       </select>
                     ) : (
-                      <Input required name={f.k} type={f.type ?? "text"} className="form-control" maxLength={200} />
+                      <Input required={f.type !== "optional"} name={f.k} type={f.type === "optional" ? "text" : f.type ?? "text"} className="form-control" maxLength={200} />
                     )}
                   </label>
                 )) : (
@@ -130,6 +129,11 @@ function RegisterPage() {
                         <Upload className="size-5 text-primary" />{file || t.pickFile}
                         <input required type="file" accept="image/*,application/pdf" className="sr-only" onChange={(e) => setFile(e.target.files?.[0]?.name ?? "")} />
                       </span>
+                    </label>
+                    <p className="rounded-md bg-muted p-3 text-sm font-black">{lang === "id" ? "Total pembayaran" : "Total payment"}: {ev.fee ?? "—"}</p>
+                    <label className="flex items-start gap-3 text-sm font-bold">
+                      <input required type="checkbox" className="mt-1 size-4 accent-primary" />
+                      {lang === "id" ? "Saya menyatakan data yang diisi sudah benar." : "I confirm the information provided is correct."}
                     </label>
                   </div>
                 )}
