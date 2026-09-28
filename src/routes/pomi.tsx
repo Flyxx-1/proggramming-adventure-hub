@@ -38,6 +38,17 @@ function PomiPage() {
             <Button asChild size="lg" className="game-button mt-8"><Link to="/">{t.cta}</Link></Button>
           </div>
         </div>
+        <div className="mx-auto grid max-w-5xl gap-5 px-4 pb-16 sm:px-6 md:grid-cols-3">
+          {(lang === "id"
+            ? [["Personality", "Ceria, penasaran, dan suka membantu teman baru belajar teknologi."], ["Peran di Prog{r}amming 9.0", "Pemandu setiap rangkaian 9.1 sampai 9.4 dan teman belajar para peserta."], ["Time Travel", "Pomi melintasi masa purba, kerajaan, revolusi industri, hingga masa depan bersama peserta."]]
+            : [["Personality", "Cheerful, curious, and happy to help new friends learn technology."], ["Role in Prog{r}amming 9.0", "Guide for every edition from 9.1 to 9.4 and a learning buddy for participants."], ["Time Travel", "Pomi travels through prehistory, kingdoms, the industrial revolution, and the future with participants."]]
+          ).map(([h, x]) => (
+            <div key={h} className="rounded-lg border-2 border-foreground bg-card p-5 shadow-pixel">
+              <h2 className="font-pixel text-xs text-primary">{h}</h2>
+              <p className="mt-3 text-sm leading-6">{x}</p>
+            </div>
+          ))}
+        </div>
       </section>
     </PageShell>
   );
