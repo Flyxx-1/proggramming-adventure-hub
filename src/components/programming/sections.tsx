@@ -56,7 +56,7 @@ export function HeroCarousel({ lang, onRegister, onLearn }: { lang: Lang; onRegi
                 <div className="grid items-center gap-8 lg:grid-cols-[1.08fr_.92fr]">
                   <div className="text-center lg:text-left">
                     <div className="mb-5 inline-flex items-center gap-2 rounded-full border-2 border-primary bg-card px-4 py-2 text-xs font-black uppercase text-primary shadow-pixel"><Sparkles className="size-4" />{lang === "id" ? "Petualangan teknologi lintas waktu" : "A time-travel technology adventure"}</div>
-                    <h1 className="font-pixel text-[clamp(2rem,6vw,4.7rem)] leading-[1.15] text-foreground pixel-title">PROG<span className="text-primary">&#123;R&#125;</span>AMMING <span className="text-accent">9.0</span></h1>
+                    <h1 className="font-pixel text-[clamp(1.3rem,6.5vw,4.7rem)] leading-[1.15] text-foreground pixel-title">PROG<span className="text-primary">&#123;R&#125;</span>AMMING <span className="text-accent">9.0</span></h1>
                     <h2 className="mx-auto mt-6 max-w-2xl text-3xl font-black leading-tight sm:text-4xl lg:mx-0 lg:text-5xl">{s.title[lang]}</h2>
                     <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-foreground/75 sm:text-lg lg:mx-0">{s.text[lang]}</p>
                     <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
