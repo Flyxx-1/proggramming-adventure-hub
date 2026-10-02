@@ -7,4 +7,4 @@
 - [x] Pomi page and 3-step registration pages (9.2, 9.3, 9.4).
 - [x] Browser verification: home, dark mode, 9.4 page, registration flow, mobile (no overflow).
 - [ ] Real FAQ answers, contacts, bank account, WhatsApp, Drive link (waiting on user).
-- [ ] Saving sign-ups online (waiting on user decision).
+- [x] Saving sign-ups and payment proofs online.
