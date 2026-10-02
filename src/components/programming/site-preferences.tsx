@@ -22,42 +22,17 @@ export function useSiteLanguage() {
   return [language, setLanguage] as const;
 }
 
+// Light/dark mode removed: site always uses the light (day) look.
 export function useTimeMode() {
-  const [dark, setDark] = useState(false);
-
   useEffect(() => {
-    const saved = window.localStorage.getItem("programming-time-mode");
-    const next = saved === "dark";
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
+    document.documentElement.classList.remove("dark");
+    window.localStorage.removeItem("programming-time-mode");
   }, []);
-
-  const toggle = () => {
-    setDark((current) => {
-      const next = !current;
-      document.documentElement.classList.toggle("dark", next);
-      window.localStorage.setItem("programming-time-mode", next ? "dark" : "light");
-      return next;
-    });
-  };
-
-  return [dark, toggle] as const;
+  return [false, () => {}] as const;
 }
 
-export function TimeModeToggle({ dark, onToggle, language, compact = false }: { dark: boolean; onToggle: () => void; language: SiteLanguage; compact?: boolean }) {
-  const label = dark
-    ? language === "id" ? "Aktifkan mode terang" : "Switch to light mode"
-    : language === "id" ? "Aktifkan mode gelap" : "Switch to dark mode";
-
-  return (
-    <Button type="button" variant="outline" size={compact ? "icon" : "sm"} onClick={onToggle} aria-label={label} title={label} className="time-toggle border-2">
-      <span className="relative size-4" aria-hidden="true">
-        <Sun className={`absolute inset-0 transition-all duration-500 ${dark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"}`} />
-        <Moon className={`absolute inset-0 transition-all duration-500 ${dark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"}`} />
-      </span>
-      {!compact && <span>{dark ? (language === "id" ? "Gelap" : "Dark") : (language === "id" ? "Terang" : "Light")}</span>}
-    </Button>
-  );
+export function TimeModeToggle(_props: { dark: boolean; onToggle: () => void; language: SiteLanguage; compact?: boolean }) {
+  return null;
 }
 
 export function TimeSky() {

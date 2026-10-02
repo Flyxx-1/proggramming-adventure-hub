@@ -1,5 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { submitRegistration } from "@/lib/registrations.functions";
 import { ArrowLeft, ArrowRight, CheckCircle2, Upload } from "lucide-react";
 
 import { PageShell } from "@/components/programming/page-shell";
@@ -67,17 +69,40 @@ function RegisterPage() {
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
   const [file, setFile] = useState("");
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const submitFn = useServerFn(submitRegistration);
   const steps = stepsFor(key === "9.4");
   const labels = [...steps.map((s) => s.title[lang]), lang === "id" ? "Pembayaran" : "Payment"];
   const t = lang === "id"
-    ? { title: `Pendaftaran ${ev.name.id}`, next: "Lanjut", back: "Kembali", submit: "Kirim pendaftaran", fee: "Biaya", transfer: "Transfer ke", proof: "Unggah bukti pembayaran", pickFile: "Pilih file", choose: "Pilih salah satu", doneT: "Pendaftaran terkirim!", doneX: "Terima kasih. Panitia akan menghubungimu melalui kontak yang kamu isi.", home: "Kembali ke beranda", closed: "Pendaftaran untuk rangkaian ini belum dibuka. Formulir tetap bisa dilihat sebagai gambaran.", note: "Saat ini data belum tersimpan otomatis; konfirmasi hanya tampil di layar." }
-    : { title: `${ev.name.en} Registration`, next: "Next", back: "Back", submit: "Submit registration", fee: "Fee", transfer: "Transfer to", proof: "Upload payment proof", pickFile: "Choose file", choose: "Select one", doneT: "Registration sent!", doneX: "Thank you. The committee will contact you through the details you provided.", home: "Back to home", closed: "Registration for this edition is not open yet. You can still preview the form.", note: "Data is not saved automatically yet; confirmation is shown on screen only." };
+    ? { title: `Pendaftaran ${ev.name.id}`, next: "Lanjut", back: "Kembali", submit: "Kirim pendaftaran", fee: "Biaya", transfer: "Transfer ke", proof: "Unggah bukti pembayaran", pickFile: "Pilih file", choose: "Pilih salah satu", doneT: "Pendaftaran terkirim!", doneX: "Terima kasih. Panitia akan menghubungimu melalui kontak yang kamu isi.", home: "Kembali ke beranda", closed: "Pendaftaran untuk rangkaian ini belum dibuka. Formulir tetap bisa dilihat sebagai gambaran.", note: "Data dan bukti pembayaranmu disimpan dengan aman untuk panitia." }
+    : { title: `${ev.name.en} Registration`, next: "Next", back: "Back", submit: "Submit registration", fee: "Fee", transfer: "Transfer to", proof: "Upload payment proof", pickFile: "Choose file", choose: "Select one", doneT: "Registration sent!", doneX: "Thank you. The committee will contact you through the details you provided.", home: "Back to home", closed: "Registration for this edition is not open yet. You can still preview the form.", note: "Your details and payment proof are stored securely for the committee." };
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (step < steps.length) setStep(step + 1);
-    else setDone(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const form = new FormData(e.currentTarget);
+    if (step < steps.length) {
+      const next = { ...values };
+      steps[step]!.fields.forEach((f) => { next[f.k] = String(form.get(f.k) ?? ""); });
+      setValues(next);
+      setStep(step + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const proof = form.get("proof");
+    const fd = new FormData();
+    fd.set("event", key);
+    fd.set("details", JSON.stringify(values));
+    if (proof instanceof File) fd.set("proof", proof);
+    setBusy(true); setErr("");
+    try {
+      await submitFn({ data: fd });
+      setDone(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (x) {
+      setErr(x instanceof Error ? x.message : (lang === "id" ? "Gagal mengirim." : "Failed to send."));
+    } finally { setBusy(false); }
   };
 
   return (
@@ -109,12 +134,12 @@ function RegisterPage() {
                   <label key={f.k} className="field-label">
                     {f[lang]}
                     {f.options ? (
-                      <select required name={f.k} defaultValue="" className="form-control rounded-md px-3">
+                      <select required name={f.k} defaultValue={values[f.k] ?? ""} className="form-control rounded-md px-3">
                         <option value="" disabled>{t.choose}</option>
                         {f.options.map((o) => <option key={o.id} value={o.id}>{o[lang]}</option>)}
                       </select>
                     ) : (
-                      <Input required={f.type !== "optional"} name={f.k} type={f.type === "optional" ? "text" : f.type ?? "text"} className="form-control" maxLength={200} />
+                      <Input required={f.type !== "optional"} name={f.k} defaultValue={values[f.k] ?? ""} type={f.type === "optional" ? "text" : f.type ?? "text"} className="form-control" maxLength={200} />
                     )}
                   </label>
                 )) : (
@@ -127,7 +152,7 @@ function RegisterPage() {
                       {t.proof}
                       <span className="flex cursor-pointer items-center gap-3 rounded-md border-2 border-foreground bg-background p-3 text-sm font-bold">
                         <Upload className="size-5 text-primary" />{file || t.pickFile}
-                        <input required type="file" accept="image/*,application/pdf" className="sr-only" onChange={(e) => setFile(e.target.files?.[0]?.name ?? "")} />
+                        <input required name="proof" type="file" accept="image/*,application/pdf" className="sr-only" onChange={(e) => setFile(e.target.files?.[0]?.name ?? "")} />
                       </span>
                     </label>
                     <p className="rounded-md bg-muted p-3 text-sm font-black">{lang === "id" ? "Total pembayaran" : "Total payment"}: {ev.fee ?? "—"}</p>
@@ -139,7 +164,8 @@ function RegisterPage() {
                 )}
                 <div className="flex gap-3 pt-2">
                   {step > 0 && <Button type="button" variant="outline" className="game-button-secondary" onClick={() => setStep(step - 1)}><ArrowLeft />{t.back}</Button>}
-                  <Button type="submit" className="game-button ml-auto">{step < steps.length ? t.next : t.submit}<ArrowRight /></Button>
+                  {err && <p className="self-center text-sm font-bold text-destructive">{err}</p>}
+                  <Button type="submit" disabled={busy} className="game-button ml-auto">{step < steps.length ? t.next : t.submit}<ArrowRight /></Button>
                 </div>
                 <p className="text-center text-xs text-muted-foreground">{t.note}</p>
               </form>
