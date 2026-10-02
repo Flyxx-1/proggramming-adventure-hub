@@ -288,27 +288,25 @@ function Index() {
 
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
-      <nav className="fixed inset-x-0 top-0 z-50 border-b-2 border-primary/20 bg-background/90 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 border-b-2 border-primary/20 bg-background/90 backdrop-blur-md">
         <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 lg:px-8">
-          <button onClick={() => scrollToId("top")} className="min-w-0 cursor-pointer text-left font-pixel text-sm text-primary transition-opacity hover:opacity-80 sm:text-base">PROG<span className="text-foreground">&#123;R&#125;</span>AMMING <span className="text-foreground">9.0</span></button>
-          <div className="hidden items-center gap-7 lg:flex">
+          <button onClick={() => scrollToId("top")} className="min-w-0 cursor-pointer text-left font-pixel text-xs text-primary transition-opacity hover:opacity-80 sm:text-sm">PROG<span className="text-foreground">&#123;R&#125;</span>AMMING <span className="text-foreground">9.0</span></button>
+          <div className="hidden items-center gap-4 md:flex xl:gap-6">
             {t.nav.map((item, i) => (
-              <button key={item} onClick={() => scrollToId(navHref[i]!)} className="cursor-pointer text-sm font-bold text-foreground/75 transition-colors hover:text-primary">{item}</button>
+              <button key={item} onClick={() => scrollToId(navHref[i]!)} className="cursor-pointer whitespace-nowrap text-xs font-bold text-foreground/75 transition-colors hover:text-primary xl:text-sm">{item}</button>
             ))}
             <div className="flex rounded-md border-2 border-foreground bg-card p-0.5 text-xs font-black">
               <button onClick={() => setLang("id")} className={`cursor-pointer rounded-sm px-2 py-1 transition-colors ${lang === "id" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"}`}>ID</button>
               <button onClick={() => setLang("en")} className={`cursor-pointer rounded-sm px-2 py-1 transition-colors ${lang === "en" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"}`}>EN</button>
             </div>
-            <TimeModeToggle dark={dark} onToggle={toggleTime} language={lang} />
-            <Button size="sm" className="game-button" onClick={() => goRegister()}>{t.register}</Button>
+            <Button size="sm" className="game-button whitespace-nowrap" onClick={() => goRegister()}>{t.register}</Button>
           </div>
-          <div className="flex items-center gap-2 lg:hidden">
-            <TimeModeToggle dark={dark} onToggle={toggleTime} language={lang} compact />
+          <div className="flex items-center gap-2 md:hidden">
             <Button variant="outline" size="icon" onClick={() => setMenu(!menu)} aria-label={t.menuLabel}>{menu ? <X /> : <Menu />}</Button>
           </div>
         </div>
         {menu && (
-          <div className="border-t bg-background px-4 py-4 lg:hidden">
+          <div className="border-t bg-background px-4 py-4 md:hidden">
             {t.nav.map((item, i) => (
               <button key={item} onClick={() => { setMenu(false); scrollToId(navHref[i]!); }} className="block w-full border-b py-3 text-left font-bold">{item}</button>
             ))}
