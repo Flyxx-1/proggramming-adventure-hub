@@ -288,7 +288,7 @@ function Index() {
 
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
-      <nav className="sticky top-0 z-50 border-b-2 border-primary/20 bg-background/90 backdrop-blur-md">
+      <nav className="fixed inset-x-0 top-0 z-50 border-b-2 border-primary/20 bg-background/90 backdrop-blur-md">
         <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 lg:px-8">
           <button onClick={() => scrollToId("top")} className="min-w-0 cursor-pointer text-left font-pixel text-xs text-primary transition-opacity hover:opacity-80 sm:text-sm">PROG<span className="text-foreground">&#123;R&#125;</span>AMMING <span className="text-foreground">9.0</span></button>
           <div className="hidden items-center gap-4 md:flex xl:gap-6">
