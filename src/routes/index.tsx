@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ArrowRight, Atom, Bot, Castle, Code2, Cog, Flag, Gamepad2, Instagram, Mail, Menu, Palette, Rocket, Sparkles, Users, X } from "lucide-react";
 
 import { EventCarousel, FaqSection, HeroCarousel, PlatformGrid, WhatsAppFloat } from "@/components/programming/sections";
-import { TimeModeToggle, TimeSky, useSiteLanguage, useTimeMode } from "@/components/programming/site-preferences";
+import { TimeSky, useSiteLanguage, useTimeMode } from "@/components/programming/site-preferences";
 import { Button } from "@/components/ui/button";
 import { EVENTS, SITE } from "@/data/programming";
 
