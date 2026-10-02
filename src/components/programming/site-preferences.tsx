@@ -35,22 +35,6 @@ export function TimeModeToggle(_props: { dark: boolean; onToggle: () => void; la
   return null;
 }
 
-function _UnusedTimeModeToggle({ dark, onToggle, language, compact = false }: { dark: boolean; onToggle: () => void; language: SiteLanguage; compact?: boolean }) {
-  const label = dark
-    ? language === "id" ? "Aktifkan mode terang" : "Switch to light mode"
-    : language === "id" ? "Aktifkan mode gelap" : "Switch to dark mode";
-
-  return (
-    <Button type="button" variant="outline" size={compact ? "icon" : "sm"} onClick={onToggle} aria-label={label} title={label} className="time-toggle border-2">
-      <span className="relative size-4" aria-hidden="true">
-        <Sun className={`absolute inset-0 transition-all duration-500 ${dark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"}`} />
-        <Moon className={`absolute inset-0 transition-all duration-500 ${dark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"}`} />
-      </span>
-      {!compact && <span>{dark ? (language === "id" ? "Gelap" : "Dark") : (language === "id" ? "Terang" : "Light")}</span>}
-    </Button>
-  );
-}
-
 export function TimeSky() {
   return (
     <div className="time-sky" aria-hidden="true">
