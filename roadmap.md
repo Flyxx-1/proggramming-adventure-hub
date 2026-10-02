@@ -8,3 +8,4 @@
 - [x] Browser verification: home, dark mode, 9.4 page, registration flow, mobile (no overflow).
 - [ ] Real FAQ answers, contacts, bank account, WhatsApp, Drive link (waiting on user).
 - [x] Saving sign-ups and payment proofs online.
+- [ ] Remove light/dark toggle on all pages.
